@@ -21,3 +21,4 @@ werkzeug==2.0.1
 gunicorn
 Flask-Cors==3.0.10
 gevent
+gevent-websocket

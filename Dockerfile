@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 # CMD ["gunicorn", "--conf", "wsgi.py", "--bind", "0.0.0.0:80", "app:wsgi"]
-CMD ["python", "app.py"]
+CMD ["python", "app.py", "-p","80","--host","0.0.0.0"]

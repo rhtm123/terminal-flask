@@ -19,6 +19,5 @@ python-socketio==5.4.0
 werkzeug==2.0.1
     # via flask
 gunicorn
-gevent-websocket
-eventlet==0.30.2
 Flask-Cors==3.0.10
+gevent

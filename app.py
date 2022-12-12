@@ -15,7 +15,6 @@ import sys
 
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
-__version__ = "0.5.0.2"
 
 app = Flask(__name__, template_folder=".", static_folder=".", static_url_path="")
 app.config["SECRET_KEY"] = "secret!"
@@ -100,53 +99,24 @@ def connect():
         logging.info("task started")
 
 
-def main():
-    parser = argparse.ArgumentParser(
+parser = argparse.ArgumentParser(
         description=(
-            "A fully functional terminal in your browser. "
-            "https://github.com/cs01/pyxterm.js"
         ),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser.add_argument(
-        "-p", "--port", default=5000, help="port to run server on", type=int
-    )
-    parser.add_argument(
-        "--host",
-        default="127.0.0.1",
-        help="host to run server on (use 0.0.0.0 to allow access from other hosts)",
-    )
-    parser.add_argument("--debug", action="store_true", help="debug the server")
-    parser.add_argument("--version", action="store_true", help="print version and exit")
-    parser.add_argument(
+)
+
+parser.add_argument(
         "--command", default="bash", help="Command to run in the terminal"
-    )
-    parser.add_argument(
+)
+parser.add_argument(
         "--cmd-args",
         default="",
         help="arguments to pass to command (i.e. --cmd-args='arg1 arg2 --flag')",
-    )
-    args = parser.parse_args()
-    if args.version:
-        print(__version__)
-        exit(0)
-    app.config["cmd"] = [args.command] + shlex.split(args.cmd_args)
-    green = "\033[92m"
-    end = "\033[0m"
-    log_format = (
-        green
-        + "pyxtermjs > "
-        + end
-        + "%(levelname)s (%(funcName)s:%(lineno)s) %(message)s"
-    )
-    logging.basicConfig(
-        format=log_format,
-        stream=sys.stdout,
-        level=logging.DEBUG if args.debug else logging.INFO,
-    )
-    logging.info(f"serving on http://{args.host}:{args.port}")
-    socketio.run(app, debug=args.debug, port=args.port, host=args.host)
+)
+args = parser.parse_args()
+
+app.config["cmd"] = [args.command] + shlex.split(args.cmd_args)
 
 
 if __name__ == "__main__":
-    main()
+    socketio.run(app)

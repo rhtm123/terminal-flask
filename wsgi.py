@@ -1,4 +1,5 @@
-from app import app
+from gevent.pywsgi import WSGIServer
 
-if __name__ == "__main__":
-	app.run(host='0.0.0.0')
+from app import app
+http_server = WSGIServer(("127.0.0.1", 8000), app)
+http_server.serve_forever()

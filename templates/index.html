@@ -60,6 +60,7 @@ ch.js"></script>
     <script>
       var run = document.getElementById("run")
       run.addEventListener("click",function(){
+        term.reset();
         socket.emit("pty-input", { input: "python main.py\n" });
       })
 

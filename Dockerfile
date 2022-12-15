@@ -1,11 +1,9 @@
 FROM python:3.9-slim-buster
 
-WORKDIR /app
-
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-COPY . .
+COPY . /app
 
 # CMD ["gunicorn", "--conf", "wsgi.py", "--bind", "0.0.0.0:80", "app:wsgi"]
-CMD ["python", "app.py", "-p","80","--host","0.0.0.0"]
+CMD ["python", "app/app.py", "-p","80","--host","0.0.0.0"]

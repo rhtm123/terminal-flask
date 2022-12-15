@@ -88,6 +88,8 @@ ch.js"></script>
       term.writeln("You can copy with ctrl+shift+x");
       term.writeln("You can paste with ctrl+shift+v");
       term.writeln('')
+      socket.emit("pty-input", { input: "cd /home\n" });
+  
       term.onData((data) => {
         // console.log("browser terminal received new data:", data);
         socket.emit("pty-input", { input: data });

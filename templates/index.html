@@ -1,10 +1,36 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>pyxterm.js</title>
+    <title>Terminal</title>
     <style>
       html {
-        font-family: arial;
+        font-family: "Courier New";
+      }
+      body {
+        margin: 4px;
+        /* padding-top:8px; */
+      }
+      .btn {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 52px; */
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 5px;
+  outline: none;
+      }
+      .wrapper{
+        display:flex; justify-content:space-between;
+        align-items: center; 
+        margin-bottom:4px;
       }
     </style>
     <link
@@ -14,11 +40,13 @@
   </head>
   <body>
 
+    <div class="wrapper">
+    <button class="btn" id="run">RUN</button>
     <span style="font-size: small"
-      >status:
+      >Terminal:
       <span style="font-size: small" id="status">connecting...</span></span
     >
-
+    </div>
     <div style="width: 100%; height: calc(100% - 50px)" id="terminal"></div>
 
     <!-- xterm -->
@@ -30,6 +58,12 @@ ch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
 
     <script>
+      var run = document.getElementById("run")
+      run.addEventListener("click",function(){
+        socket.emit("pty-input", { input: "python main.py\n" });
+      })
+
+
       const term = new Terminal({
         cursorBlink: true,
         macOptionIsMeta: true,
@@ -47,14 +81,14 @@ ch.js"></script>
       term.resize(15, 50);
       console.log(`size: ${term.cols} columns, ${term.rows} rows`);
       fit.fit();
-      term.writeln("Welcome to pyxterm.js!");
-    //   term.writeln("https://github.com/cs01/pyxterm.js");
-    //   term.writeln('')
-    //   term.writeln("You can copy with ctrl+shift+x");
-    //   term.writeln("You can paste with ctrl+shift+v");
+      term.writeln("Welcome to terminal");
+
+      term.writeln("Click on RUN to execute your program");
+      term.writeln("You can copy with ctrl+shift+x");
+      term.writeln("You can paste with ctrl+shift+v");
       term.writeln('')
       term.onData((data) => {
-        console.log("browser terminal received new data:", data);
+        // console.log("browser terminal received new data:", data);
         socket.emit("pty-input", { input: data });
       });
 

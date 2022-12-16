@@ -55,14 +55,14 @@ def pty_input(data):
     terminal.
     """
     if app.config["fd"]:
-        logging.debug("received input from browser: %s" % data["input"])
+        # logging.debug("received input from browser: %s" % data["input"])
         os.write(app.config["fd"], data["input"].encode())
 
 
 @socketio.on("resize", namespace="/pty")
 def resize(data):
     if app.config["fd"]:
-        logging.debug(f"Resizing window to {data['rows']}x{data['cols']}")
+        # logging.debug(f"Resizing window to {data['rows']}x{data['cols']}")
         set_winsize(app.config["fd"], data["rows"], data["cols"])
 
 

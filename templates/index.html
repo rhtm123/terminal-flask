@@ -26,6 +26,8 @@
   border-color: transparent;
   border-radius: 5px;
   outline: none;
+  background-color: #15802e;
+  color: #fff;
       }
       .wrapper{
         display:flex; justify-content:space-between;
@@ -93,7 +95,7 @@ ch.js"></script>
 
       const socket = io.connect("/pty");
       const status = document.getElementById("status");
-      socket.emit("pty-input", { input: "cd /home\n" });
+      socket.emit("pty-input", { input: "cd /src\n" });
 
       socket.on("pty-output", function (data) {
         // console.log("new output received from server:", data.output);

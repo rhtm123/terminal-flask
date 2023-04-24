@@ -7,7 +7,7 @@
         font-family: "arial";
       }
       body {
-        margin: 4px;
+        margin: 0px;
         /* padding-top:8px; */
       }
       .btn {
@@ -32,7 +32,8 @@
       .wrapper{
         display:flex; justify-content:space-between;
         align-items: center; 
-        margin-bottom:4px;
+        background: #3d3d3d;
+        /* margin-bottom:4px; */
       }
     </style>
     <link
@@ -57,10 +58,13 @@ ch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
 
     <script>
-      var run = document.getElementById("run")
+      var run = document.getElementById("run");
+      let value = localStorage.getItem('pty-cmd');
+      // console.log(value)
+      let cmd = value ? value:"python main.py";
       run.addEventListener("click",function(){
         term.reset();
-        socket.emit("pty-input", { input: "python main.py\n" });
+        socket.emit("pty-input", { input: cmd+"\n" });
       })
 
 

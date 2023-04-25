@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 import pty
 import os
@@ -12,6 +12,9 @@ import fcntl
 import shlex
 import logging
 import sys
+
+import traceback
+from flask_cors import CORS, cross_origin
 
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
@@ -47,6 +50,107 @@ def read_and_forward_pty_output():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+cmds = {
+    'nodejs':"node main.js",
+    'python':"python main.py",
+}
+
+@app.route("/terminal/<slug>/")
+def lang_terminal(slug):
+    cmd = cmds.get(slug)
+    
+    return render_template("lang-terminal.html", data = cmd)
+
+
+class InputsNotProvidedError(Exception):
+    """Base class for other exceptions"""
+    pass
+
+
+
+@app.route("/run_python_code/",  methods = ['GET','POST'])
+@cross_origin()
+def run_python_code():
+    if request.method=="POST":
+
+        d = {"error":False}
+
+        request_data = request.get_json()
+        inputs = request_data.get('inputs',"").strip()
+        code = request_data.get('code',"").strip()
+        assert_code = request_data.get("assert_code","")
+
+    
+        if inputs:
+            if "\n" in inputs:
+                a = [i.strip() for i in inputs.split("\n")]
+            elif  '\\n' in inputs:
+                a = [i.strip() for i in inputs.split("\\n")]
+            else:
+                a = [inputs]
+        else:
+            a = []
+
+        i = 0
+        l = len(a)
+        def input(str=""):
+            nonlocal i
+            if i<l:
+                val = a[i]
+                i = i + 1
+                return val
+            else:
+                raise InputsNotProvidedError("input value(s) may not provided")
+
+        orig_stdout = sys.stdout
+        with open('file.txt', "w") as f:
+            sys.stdout = f
+            try:
+                exec(code)
+            except SyntaxError as err:
+                error_class = err.__class__.__name__
+                detail = err.args[0]
+                line_number = err.lineno
+                d = {"error": True, "errorText":"%s at line %d of %s" % (error_class, line_number, detail)}
+
+            except InputsNotProvidedError as err:
+                error_class = err.__class__.__name__
+                detail = err.args[0]
+                d = {"error": True, "errorText":"%s: %s" % (error_class,detail)}
+
+            except Exception as err:
+                error_class = err.__class__.__name__
+                detail = err.args[0]
+                cl, exc, tb = sys.exc_info()
+                line_number = traceback.extract_tb(tb)[-1][1]
+                d = {"error": True, "errorText":"%s at line %d of %s" % (error_class, line_number, detail)}
+            
+            except:
+                d = {"error": True, "errorText":"Error"}
+
+            sys.stdout = orig_stdout
+
+        if not d['error'] and assert_code!="":
+            try:
+                exec(assert_code)
+                # print("done", assert_code)
+            except Exception as err:
+                # print(err)
+                error_class = err.__class__.__name__
+                detail = err.args[0]
+                d = {"error": True, "errorText":"%s : %s" % (error_class, detail)}
+                # print(d)
+
+        with open("file.txt", 'r') as f:
+            v = f.read()
+            d['output'] = v
+
+        return jsonify(d)
+        
+    else:
+        return "nothing"
+    
 
 
 @socketio.on("pty-input", namespace="/pty")

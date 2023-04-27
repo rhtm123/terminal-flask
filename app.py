@@ -52,8 +52,8 @@ def index():
     return render_template("index.html")
 
 cmds = {
-    'nodejs':"node main.js",
-    'python':"python main.py",
+    'nodejs':{"run":"node main.js", "install":r"apt-get update && apt-get nodejs -y"},
+    'python':{"run":"python main.py", "install":""},
 }
 
 @app.route("/terminal/<slug>/")

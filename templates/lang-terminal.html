@@ -59,10 +59,11 @@ ch.js"></script>
 
     <script>
       // console.log(value)
-      let cmd = '{{data}}';
+      let runcmd = '{{data.run}}';
+      let initialinstall = '{{data.install}}'.replace(/&amp;/g, '&')
       run.addEventListener("click",function(){
         term.reset();
-        socket.emit("pty-input", { input: cmd+"\n" });
+        socket.emit("pty-input", { input: runcmd+"\n" });
       })
 
 
@@ -83,12 +84,7 @@ ch.js"></script>
       term.resize(15, 50);
       console.log(`size: ${term.cols} columns, ${term.rows} rows`);
       fit.fit();
-      term.writeln("Welcome to terminal");
-
-      term.writeln("Click on RUN to execute your program");
-      term.writeln("You can copy with ctrl+shift+x");
-      term.writeln("You can paste with ctrl+shift+v");
-      term.writeln('')
+      
   
       term.onData((data) => {
         // console.log("browser terminal received new data:", data);
@@ -98,7 +94,17 @@ ch.js"></script>
       const socket = io.connect("/pty");
       const status = document.getElementById("status");
       socket.emit("pty-input", { input: "cd /src\n" });
+      if (initialinstall){
+      socket.emit("pty-input", { input: initialinstall+"\n" });
+      }
 
+      term.writeln("Welcome to terminal");
+
+      term.writeln("Click on RUN to execute your program");
+      term.writeln("You can copy with ctrl+shift+x");
+      term.writeln("You can paste with ctrl+shift+v");
+      term.writeln('')
+      
       socket.on("pty-output", function (data) {
         // console.log("new output received from server:", data.output);
         term.write(data.output);

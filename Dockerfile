@@ -1,4 +1,6 @@
-FROM nikolaik/python3.9-nodejs20-slim
+FROM python:3.9-slim-buster
+RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
+   apt-get install -y nodejs
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

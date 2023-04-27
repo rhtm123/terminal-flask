@@ -1,6 +1,5 @@
 FROM python:3.9-slim-buster
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
-   apt-get install -y nodejs
+RUN apt-get update && apt-get install -y nodejs && apt-get intall -y npm
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster
+FROM nikolaik/python3.9-nodejs20-slim
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

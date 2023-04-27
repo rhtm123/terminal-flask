@@ -52,7 +52,7 @@ def index():
     return render_template("index.html")
 
 cmds = {
-    'nodejs':{"run":"node main.js", "install":r"apt-get update && apt-get install nodejs -y"},
+    'nodejs':{"run":"node main.js", "install":""},
     'python':{"run":"python main.py", "install":""},
 }
 

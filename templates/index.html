@@ -71,7 +71,7 @@ ch.js"></script>
       const term = new Terminal({
         cursorBlink: true,
         macOptionIsMeta: true,
-        scrollback: true,
+        // scrollback: true,
       });
       term.attachCustomKeyEventHandler(customKeyEventHandler);
       // https://github.com/xtermjs/xterm.js/issues/2941
@@ -82,7 +82,7 @@ ch.js"></script>
 
       term.open(document.getElementById("terminal"));
       fit.fit();
-      term.resize(15, 50);
+      term.resize(50, 50);
       console.log(`size: ${term.cols} columns, ${term.rows} rows`);
       fit.fit();
       term.writeln("Welcome to terminal");

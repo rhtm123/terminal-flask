@@ -1,4 +1,4 @@
-FROM python3.10-nodejs16-slim
+FROM nikolaik/python3.10-nodejs16-slim
 RUN apt-get install -y npm
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt

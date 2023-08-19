@@ -1,5 +1,5 @@
-FROM python:3.9-slim-buster
-RUN apt-get update && apt-get install -y nodejs && apt-get install -y npm
+FROM python3.10-nodejs16-slim
+RUN apt-get install -y npm
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

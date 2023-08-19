@@ -1,5 +1,4 @@
 FROM python:3.9-slim-buster
-RUN apt-get install xz-utils
 RUN apt-get -y install curl
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
    apt-get install -y nodejs

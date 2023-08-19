@@ -1,7 +1,10 @@
 FROM python:3.9-slim-buster
+RUN apt-get update
+RUN apt-get install xz-utils
 RUN apt-get -y install curl
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
    apt-get install -y nodejs
+
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

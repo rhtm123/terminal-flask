@@ -59,7 +59,7 @@ ch.js"></script>
 
     <script>
       // console.log(value)
-      let runcmd = '{{data.run}}';
+      let runcmd = '{{data.run}}'.replace(/&amp;/g, '&');
       let initialinstall = '{{data.install}}'.replace(/&amp;/g, '&')
       run.addEventListener("click",function(){
         term.reset();

@@ -4,7 +4,7 @@ RUN apt-get install xz-utils
 RUN apt-get -y install curl
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
    apt-get install -y nodejs
-RUN apt install build-essential
+RUN apt-get install build-essential
 COPY main.py /src/main.py
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt

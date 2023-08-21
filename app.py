@@ -54,6 +54,7 @@ def index():
 cmds = {
     'nodejs':{"run":"node main.js", "install":""},
     'python':{"run":"python main.py", "install":""},
+    'c-language':{"run":"gcc main.c -o main && ./main", "install":""}
 }
 
 @app.route("/terminal/<slug>/")
@@ -61,7 +62,6 @@ def lang_terminal(slug):
     cmd = cmds.get(slug)
     
     return render_template("lang-terminal.html", data = cmd)
-
 
 class InputsNotProvidedError(Exception):
     """Base class for other exceptions"""

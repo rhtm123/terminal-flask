@@ -7,7 +7,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
 RUN apt-get install -y build-essential
 COPY main.py /src/main.py
 WORKDIR /src/
-RUN npm install -g prompt-sync
+RUN npm install prompt-sync
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 

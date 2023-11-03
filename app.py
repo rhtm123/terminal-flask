@@ -59,6 +59,7 @@ cmds = {
     'c-language':{"run":"gcc main.c -o main && ./main", "install":""}
 }
 
+
 @app.route("/terminal/<slug>/")
 def lang_terminal(slug):
     cmd = cmds.get(slug)
